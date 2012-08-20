@@ -1,6 +1,5 @@
 module.exports = function( grunt ) {
-
-	grunt.registerTask("describe", "Describes current git commit", function () {
+	grunt.registerTask("describe", "Describes current git commit", function (prop) {
 		var done = this.async();
 
 		grunt.utils.spawn({
@@ -12,7 +11,7 @@ module.exports = function( grunt ) {
 				return done(false);
 			}
 
-			grunt.config("meta.version", result);
+			grunt.config(prop || "meta.version", result);
 
 			done(result);
 		});
