@@ -23,9 +23,6 @@
 	"engines": {
 		"node": "*"
 	},
-	"dependencies": {
-		"grunt": "~0.3.11"
-	},
 	"keywords": [
 		"gruntplugin"
 	]
