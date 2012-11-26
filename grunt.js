@@ -4,7 +4,7 @@ module.exports = function( grunt ) {
 		lint: {
 			files: [ "grunt.js", "tasks/**/*.js" ]
 		},
-		describe: { dirtyMarker: '+', prop: 'meta.git.version', },
+		describe: { dirtyMark: '+', prop: 'meta.git.version' }
 	});
 
 	grunt.registerTask( "default", "lint" );
