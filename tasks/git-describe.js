@@ -1,8 +1,7 @@
 module.exports = function( grunt ) {
-	grunt.registerTask("describe", "Describes current git commit", function (propArg) {
-		var done = this.async();
-		var dirtyMark = grunt.config.process("describe.dirtyMark") || "-dirty";
-		var prop = propArg || grunt.config.process("describe.prop") || "meta.version";
+	grunt.registerTask("describe", "Describes current git commit", function () {
+    var done = this.async();
+		var dirtyMark = grunt.config("describe.dirtyMark") || "-dirty";
 		var util = "0.4" > grunt.version ? grunt.utils : grunt.util;
 
 		grunt.log.write("Describe current commit: ");
@@ -16,9 +15,12 @@ module.exports = function( grunt ) {
 				return done(false);
 			}
 
-			grunt.config(prop, result);
+			grunt.log.writeln(result.toString().green);
 
-			grunt.log.writeln((prop + " = " + result).green);
+      var outFile;
+      if (outFile = grunt.config('describe.out')) {
+        grunt.file.write(outFile, result);
+      }
 
 			done(result);
 		});
