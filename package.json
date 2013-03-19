@@ -1,7 +1,7 @@
 {
   "name": "grunt-git-describe",
   "description": "Describes current git commit",
-  "version": "2.0.0-SNAPSHOT",
+  "version": "2.0.0",
   "homepage": "https://github.com/mikaelkaron/grunt-git-describe",
   "author": {
     "name": "Mikael Karon",
