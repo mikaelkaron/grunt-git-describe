@@ -35,22 +35,24 @@ grunt.initConfig({
 })
 ```
 
+> Note that since this is a [multi-task](http://gruntjs.com/creating-tasks#multi-tasks) you have to have at least one target defined for `git-describe` (otherwise the task won't run)
+
 ### Options
 
 #### options.prop
-Type: `String`
+Type: `String`  
 Default value: `''`
 
 A string value that is used as a property name for storing the result of this task
 
 #### options.cwd
-Type: `String`
+Type: `String`  
 Default value: `'.'`
 
 A string value that is used to do set the current working directory when spawning the `git` command
 
 #### options.dirtyMark
-Type: `String`
+Type: `String`  
 Default value: `'-dirty'`
 
 A string value that is used as the for the `dirty=` option passed to `git`
@@ -59,5 +61,5 @@ A string value that is used as the for the `dirty=` option passed to `git`
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
-1.0 - First release, compatible with grunt `~0.3.0`
+1.0 - First release, compatible with grunt `~0.3.0`  
 2.0 - Updated version for grunt `~0.4.0`
