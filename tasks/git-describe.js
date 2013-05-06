@@ -50,6 +50,9 @@ module.exports = function (grunt) {
 				grunt.fail.warn(err);
 			}
 
+			// Convert result to string
+			result = String(result);
+
 			// Output
 			grunt.log.ok(result);
 
