@@ -57,6 +57,12 @@ Default value: `'-dirty'`
 
 A string value that is used as the for the `dirty=` option passed to `git`
 
+#### options.failOnError
+Type: `boolean`  
+Default value: `true`
+
+A boolean that allows Grunt to keep going if there's an error in this task. This is useful if your build isn't guaranteed to always be run from within a Git repo.
+
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
