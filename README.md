@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mikaelkaron/grunt-git-describe.png)](https://travis-ci.org/mikaelkaron/grunt-git-describe)
+
 # grunt-git-describe
 
 > Describes current git commit
