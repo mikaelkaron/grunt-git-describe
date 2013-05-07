@@ -11,6 +11,7 @@
 module.exports = function (grunt) {
 	var CWD = "cwd";
 	var PROP = "prop";
+	var FAIL_ON_ERROR = "failOnError";
 	var DIRTY_MARK = "dirtyMark";
 
 	grunt.registerMultiTask("git-describe", "Describes current git commit", function (prop, cwd) {
@@ -21,6 +22,7 @@ module.exports = function (grunt) {
 		var options = {};
 		options[CWD] = ".";
 		options[DIRTY_MARK] = "-dirty";
+		options[FAIL_ON_ERROR] = true;
 
 		// Load cli options (with defaults)
 		options = this.options(options);
@@ -43,11 +45,17 @@ module.exports = function (grunt) {
 		}, function (err, result) {
 			// If an error occurred...
 			if (err) {
-				// Done with false
-				done(false);
-
-				// Fail with error
-				grunt.fail.warn(err);
+				// ... and we consider this case fatal
+				if ( options[FAIL_ON_ERROR] ) {
+					// Log the problem and tell grunt to stop
+					done(false);
+					grunt.fail.warn(err);
+				} else {
+                    // Log the problem and let grunt continue
+					grunt.log.error(err,result);
+					done();
+				}
+				return;
 			}
 
 			// Convert result to string
@@ -60,9 +68,9 @@ module.exports = function (grunt) {
 			if (options[PROP]) {
 				grunt.config(options[PROP], result);
 			}
-
+            
 			// Done with result
-			done(result);
+			done();
 		});
 	});
 };
