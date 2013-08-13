@@ -150,7 +150,7 @@ module.exports = function (grunt) {
 
 			// If we were passed a callback we should call
 			if (grunt.util.kindOf(options[CALLBACK]) === "function") {
-				callback.call(null, matches);
+				options[CALLBACK].call(null, matches);
 			}
 
 			// Done with result
