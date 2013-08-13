@@ -21,7 +21,12 @@ module.exports = function (grunt) {
 		},
 
 		"git-describe": {
-			"me" : {
+			"full": {
+			},
+			"reversed": {
+				"options": {
+					"template": "{%=object%}-{%=since%}-{%=tag%}{%=dirty%}"
+				}
 			}
 		}
 
