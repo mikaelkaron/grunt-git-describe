@@ -11,6 +11,7 @@
 module.exports = function (grunt) {
 	var PROP = "prop";
 	var CALLBACK = "callback";
+	var FAIL_ON_ERROR = "failOnError";
 	var CWD = "cwd";
 	var COMMITISH = "commitish";
 	var TEMPLATE = "template";
@@ -60,23 +61,33 @@ module.exports = function (grunt) {
 		}, function (err, result) {
 			// If an error occurred...
 			if (err) {
-				// Fail with error
-				grunt.fail.warn(err);
-
-				// Done with false
-				done(false);
+				// ... and we consider this case fatal
+				if ( options[FAIL_ON_ERROR] ) {
+					// Log the problem and tell grunt to stop
+					done(false);
+					grunt.fail.warn(err);
+				} else {
+                    // Log the problem and let grunt continue
+					grunt.log.error(err, result);
+					done();
+				}
 			}
 
 			// Get matches
 			var matches = result.toString().match(RE);
 
-			// Make sure we matched
+			// If we did not match...
 			if (matches === null) {
-				// Fail with error
-				grunt.fail.warn("Unable to match '" + result + "'");
-
-				// Done with false
-				done(false);
+				// ... and we consider this case fatal
+				if ( options[FAIL_ON_ERROR] ) {
+					// Log the problem and tell grunt to stop
+					done(false);
+					grunt.fail.warn("Unable to math '" + result + "'");
+				} else {
+                    // Log the problem and let grunt continue
+					grunt.log.error("Unable to math '" + result + "'");
+					done();
+				}
 			}
 
 			// Define extended properties on `matches`
