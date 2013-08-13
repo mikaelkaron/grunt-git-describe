@@ -35,6 +35,8 @@ grunt.initConfig({
 })
 ```
 
+> Note that since this is a [multi-task](http://gruntjs.com/creating-tasks#multi-tasks) you have to have at least one target defined for `git-describe` (otherwise the task won't run)
+
 ### Options
 
 #### options.prop
@@ -67,6 +69,12 @@ Type: `String`
 Default value: `{%=tag%}-{%=since%}-{%=object%}{%=dirty%}`
 
 A string value used to format the result of this task
+
+#### options.failOnError
+Type: `boolean`  
+Default value: `true`
+
+A boolean that allows Grunt to keep going if there's an error in this task. This is useful if your build isn't guaranteed to always be run from within a Git repo.
 
 ## Contributing
 
