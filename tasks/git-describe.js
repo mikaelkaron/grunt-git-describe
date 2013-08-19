@@ -9,8 +9,7 @@
 "use strict";
 
 module.exports = function (grunt) {
-	var PROP = "prop";
-	var CALLBACK = "callback";
+	var GIT_DESCRIBE = "git-describe";
 	var FAIL_ON_ERROR = "failOnError";
 	var CWD = "cwd";
 	var COMMITISH = "commitish";
@@ -22,9 +21,9 @@ module.exports = function (grunt) {
 	OPTIONS[TEMPLATE] = "{%=tag%}-{%=since%}-{%=object%}{%=dirty%}";
 
 	// Register additional delimiters
-	grunt.template.addDelimiters("git-describe", "{%", "%}");
+	grunt.template.addDelimiters(GIT_DESCRIBE, "{%", "%}");
 
-	grunt.registerMultiTask("git-describe", "Describes git commit", function (cwd, commitish, template) {
+	grunt.registerMultiTask(GIT_DESCRIBE, "Describes git commit", function (cwd, commitish, template) {
 		// Start async task
 		var done = this.async();
 
@@ -62,12 +61,12 @@ module.exports = function (grunt) {
 			// If an error occurred...
 			if (err) {
 				// ... and we consider this case fatal
-				if ( options[FAIL_ON_ERROR] ) {
+				if (options[FAIL_ON_ERROR]) {
 					// Log the problem and tell grunt to stop
 					done(false);
 					grunt.fail.warn(err);
 				} else {
-                    // Log the problem and let grunt continue
+					// Log the problem and let grunt continue
 					grunt.log.error(err, result);
 					done();
 				}
@@ -79,13 +78,13 @@ module.exports = function (grunt) {
 			// If we did not match...
 			if (matches === null) {
 				// ... and we consider this case fatal
-				if ( options[FAIL_ON_ERROR] ) {
+				if (options[FAIL_ON_ERROR]) {
 					// Log the problem and tell grunt to stop
 					done(false);
-					grunt.fail.warn("Unable to math '" + result + "'");
+					grunt.fail.warn("Unable to match '" + result + "'");
 				} else {
-                    // Log the problem and let grunt continue
-					grunt.log.error("Unable to math '" + result + "'");
+					// Log the problem and let grunt continue
+					grunt.log.error("Unable to match '" + result + "'");
 					done();
 				}
 			}
@@ -99,7 +98,7 @@ module.exports = function (grunt) {
 
 						return grunt.template.process(override || me[TEMPLATE], {
 							"data": me,
-							"delimiters": "git-describe"
+							"delimiters": GIT_DESCRIBE
 						});
 					}
 				},
@@ -151,18 +150,11 @@ module.exports = function (grunt) {
 				}
 			});
 
+			// Emit
+			grunt.event.emit(GIT_DESCRIBE, matches, options);
+
 			// Log
 			grunt.log.ok(matches);
-
-			// If we were passed a prop we should update
-			if (options[PROP]) {
-				grunt.config(options[PROP], matches);
-			}
-
-			// If we were passed a callback we should call
-			if (grunt.util.kindOf(options[CALLBACK]) === "function") {
-				options[CALLBACK].call(null, matches);
-			}
 
 			// Done with result
 			done(matches);
