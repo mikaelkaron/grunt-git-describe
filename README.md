@@ -42,19 +42,6 @@ grunt.initConfig({
 
 ### Options
 
-#### options.prop
-Type: `String`  
-Default value: `''`
-
-A string value that is used as a property name for storing the result of this task
-
-#### options.callback
-Type: `Function`  
-Default value: `undefined`
-
-
-A function that will be called with the result of this task
-
 #### options.cwd
 Type: `String`  
 Default value: `'.'`
@@ -85,6 +72,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+2.2.0 - Removed support for `callback` and `prop` (use `grunt.event.emit` instead)  
 2.1.0 - Added support for `callback` and `template` and deprecated `dirtyMark`  
 2.0.0 - Updated version for grunt `~0.4.0`  
 1.0.0 - First release, compatible with grunt `~0.3.0`
