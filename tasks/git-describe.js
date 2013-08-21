@@ -6,9 +6,10 @@
  * Licensed under the MIT license.
  */
 
-"use strict";
-
 module.exports = function (grunt) {
+	"use strict";
+
+	var _ = grunt.util._;
 	var GIT_DESCRIBE = "git-describe";
 	var FAIL_ON_ERROR = "failOnError";
 	var CWD = "cwd";
@@ -16,35 +17,49 @@ module.exports = function (grunt) {
 	var TEMPLATE = "template";
 	var RE =/(?:(.*)-(\d+)-g)?([a-fA-F0-9]{7})(-dirty)?$/;
 
+	// Initial OPTIONS
 	var OPTIONS = {};
 	OPTIONS[CWD] = ".";
 	OPTIONS[TEMPLATE] = "{%=tag%}-{%=since%}-{%=object%}{%=dirty%}";
 
-	// Register additional delimiters
+	// Add GIT_DESCRIBE delimiters
 	grunt.template.addDelimiters(GIT_DESCRIBE, "{%", "%}");
 
-	grunt.registerMultiTask(GIT_DESCRIBE, "Describes git commit", function (cwd, commitish, template) {
+	// Register GIT_DESCRIBE task
+	grunt.registerMultiTask(GIT_DESCRIBE, "Describes git commit", function (/* commitish, cwd, template */) {
 		// Start async task
 		var done = this.async();
+
+		// Get task options
+		var options = this.options(OPTIONS);
 
 		// Store some locals
 		var name = this.name;
 		var target = this.target;
 		var args = this.args;
 
-		// Get task options
-		var options = this.options(OPTIONS);
-
-		// Update `options` with cli values
-		[ CWD, COMMITISH, TEMPLATE ].forEach(function (key, index) {
-			options[key] = [
+		// Populate `options` with values
+		_.each([ COMMITISH, CWD, TEMPLATE ], function (key, index) {
+			options[key] = _.find([
 				args[index],
 				grunt.option([ name, target, key ].join(".")),
 				grunt.option([ name, key ].join(".")),
-				grunt.option(key)
-			].filter(function (value) {
+				grunt.option(key),
+				options[key]
+			], function (value) {
 				return grunt.util.kindOf(value) !== "undefined";
-			})[0] || options[key];
+			});
+		});
+
+		// Process `options` with template
+		_.each([ COMMITISH, CWD, FAIL_ON_ERROR ], function (key) {
+			var value = options[key];
+
+			if (grunt.util.kindOf(value) === "string") {
+				options[key] = grunt.template.process(value, {
+					"delimiters" : GIT_DESCRIBE
+				});
+			}
 		});
 
 		// Log flags (if verbose)
@@ -93,10 +108,10 @@ module.exports = function (grunt) {
 			Object.defineProperties(matches, {
 				"toString" : {
 					"enumerable" : true,
-					"value" : function(override) {
+					"value" : function(template) {
 						var me = this;
 
-						return grunt.template.process(override || me[TEMPLATE], {
+						return grunt.template.process(template || me[TEMPLATE], {
 							"data": me,
 							"delimiters": GIT_DESCRIBE
 						});
