@@ -10,6 +10,8 @@ module.exports = function (grunt) {
 	"use strict";
 
 	var _ = grunt.util._;
+	var _process = require("grunt-util-process")(grunt);
+	var _options = require("grunt-util-options")(grunt);
 	var GIT_DESCRIBE = "git-describe";
 	var FAIL_ON_ERROR = "failOnError";
 	var CWD = "cwd";
@@ -26,41 +28,17 @@ module.exports = function (grunt) {
 	grunt.template.addDelimiters(GIT_DESCRIBE, "{%", "%}");
 
 	// Register GIT_DESCRIBE task
-	grunt.registerMultiTask(GIT_DESCRIBE, "Describes git commit", function (/* commitish, cwd, template */) {
+	grunt.registerMultiTask(GIT_DESCRIBE, "Describes git commit", function (/* commitish, cwd, template, failOnError */) {
+		var me = this;
+
 		// Start async task
-		var done = this.async();
+		var done = me.async();
 
-		// Get task options
-		var options = this.options(OPTIONS);
+		// Get options and process
+		var options = _process.call(_options.call(me, me.options(OPTIONS), COMMITISH, CWD, TEMPLATE, FAIL_ON_ERROR), {
+			"delimiters" : GIT_DESCRIBE
+		}, COMMITISH, CWD, FAIL_ON_ERROR);
 
-		// Store some locals
-		var name = this.name;
-		var target = this.target;
-		var args = this.args;
-
-		// Populate `options` with values
-		_.each([ COMMITISH, CWD, TEMPLATE ], function (key, index) {
-			options[key] = _.find([
-				args[index],
-				grunt.option([ name, target, key ].join(".")),
-				grunt.option([ name, key ].join(".")),
-				grunt.option(key),
-				options[key]
-			], function (value) {
-				return grunt.util.kindOf(value) !== "undefined";
-			});
-		});
-
-		// Process `options` with template
-		_.each([ COMMITISH, CWD, FAIL_ON_ERROR ], function (key) {
-			var value = options[key];
-
-			if (grunt.util.kindOf(value) === "string") {
-				options[key] = grunt.template.process(value, {
-					"delimiters" : GIT_DESCRIBE
-				});
-			}
-		});
 
 		// Log flags (if verbose)
 		grunt.log.verbose.writeflags(options);

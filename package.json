@@ -21,6 +21,10 @@
     }
   ],
   "main": "Gruntfile.js",
+  "dependencies": {
+    "grunt-util-options": "~0.0.1",
+    "grunt-util-process": "~0.0.1"
+  },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.6.2",
     "grunt": "~0.4.1"
