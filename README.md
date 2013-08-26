@@ -69,12 +69,12 @@ A boolean that allows Grunt to keep going if there's an error in this task. This
 ### Saving Output
 If you would like to save or otherwise use the retun value, use `grunt.event.emit`. Here is an example:
 ```js
-grunt.registerTask('saveRevision', function(){
-    grunt.event.once('git-describe', function (rev){
-        grunt.log.writeln("Git Revision: " + rev)
-        grunt.option('gitRevision', rev)
+grunt.registerTask('saveRevision', function() {
+    grunt.event.once('git-describe', function (rev) {
+        grunt.log.writeln("Git Revision: " + rev);
+        grunt.option('gitRevision', rev);
     });    
-    grunt.task.run 'git-describe'
+    grunt.task.run('git-describe');
 });
 ```
 
