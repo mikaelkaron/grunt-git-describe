@@ -66,6 +66,18 @@ Default value: `true`
 
 A boolean that allows Grunt to keep going if there's an error in this task. This is useful if your build isn't guaranteed to always be run from within a Git repo.
 
+### Saving Output
+If you would like to save or otherwise use the retun value, use `grunt.event.emit`. Here is an example:
+```js
+grunt.registerTask('saveRevision', function(){
+    grunt.event.once('git-describe', function (rev){
+        grunt.log.writeln("Git Revision: " + rev)
+        grunt.option('gitRevision', rev)
+    });    
+    grunt.task.run 'git-describe'
+});
+```
+
 ## Contributing
 
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
