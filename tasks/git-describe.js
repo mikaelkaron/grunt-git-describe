@@ -12,39 +12,41 @@ module.exports = function (grunt) {
 	var _ = grunt.util._;
 	var _process = require("grunt-util-process")(grunt);
 	var _options = require("grunt-util-options")(grunt);
+	var _spawn = require("grunt-util-spawn")(grunt);
+	var _args = require("grunt-util-args")(grunt);
+	var RE =/(?:(.*)-(\d+)-g)?([a-fA-F0-9]{7})(-dirty)?$/;
 	var GIT_DESCRIBE = "git-describe";
-	var FAIL_ON_ERROR = "failOnError";
 	var CWD = "cwd";
 	var COMMITISH = "commitish";
 	var TEMPLATE = "template";
-	var RE =/(?:(.*)-(\d+)-g)?([a-fA-F0-9]{7})(-dirty)?$/;
+	var FAIL_ON_ERROR = "failOnError";
 
 	// Initial OPTIONS
 	var OPTIONS = {};
 	OPTIONS[CWD] = ".";
 	OPTIONS[TEMPLATE] = "{%=tag%}-{%=since%}-{%=object%}{%=dirty%}";
+	OPTIONS[FAIL_ON_ERROR] = true;
 
 	// Add GIT_DESCRIBE delimiters
 	grunt.template.addDelimiters(GIT_DESCRIBE, "{%", "%}");
 
 	// Register GIT_DESCRIBE task
-	grunt.registerMultiTask(GIT_DESCRIBE, "Describes git commit", function (/* commitish, cwd, template, failOnError */) {
+	grunt.registerMultiTask(GIT_DESCRIBE, "Describes git commit", function (/* commitish, cwd, template */) {
 		var me = this;
 
 		// Start async task
 		var done = me.async();
 
 		// Get options and process
-		var options = _process.call(_options.call(me, me.options(OPTIONS), COMMITISH, CWD, TEMPLATE, FAIL_ON_ERROR), {
+		var options = _process.call(_options.call(me, _.defaults(_args.call(me, COMMITISH, CWD, TEMPLATE), me.options(OPTIONS)), COMMITISH, CWD, TEMPLATE, FAIL_ON_ERROR), {
 			"delimiters" : GIT_DESCRIBE
 		}, COMMITISH, CWD, FAIL_ON_ERROR);
-
 
 		// Log flags (if verbose)
 		grunt.log.verbose.writeflags(options);
 
 		// Spawn git
-		grunt.util.spawn({
+		_spawn({
 			"cmd" : "git",
 			"args" : [ "describe", "--tags", "--always", "--long", options[COMMITISH] || "--dirty" ],
 			"opts" : {
@@ -55,14 +57,16 @@ module.exports = function (grunt) {
 			if (err) {
 				// ... and we consider this case fatal
 				if (options[FAIL_ON_ERROR]) {
-					// Log the problem and tell grunt to stop
-					done(false);
-					grunt.fail.warn(err);
+					// Signal done with error
+					done(err);
 				} else {
-					// Log the problem and let grunt continue
-					grunt.log.error(err, result);
+					// Log the problem and signal done
+					grunt.log.error(err).verbose.error(result);
 					done();
 				}
+
+				// Make sure we don't continue
+				return;
 			}
 
 			// Get matches
@@ -72,14 +76,16 @@ module.exports = function (grunt) {
 			if (matches === null) {
 				// ... and we consider this case fatal
 				if (options[FAIL_ON_ERROR]) {
-					// Log the problem and tell grunt to stop
-					done(false);
-					grunt.fail.warn("Unable to match '" + result + "'");
+					// Signal done with error
+					done(new Error("Unable to match '" + result + "'"));
 				} else {
-					// Log the problem and let grunt continue
+					// Log the problem and signal done
 					grunt.log.error("Unable to match '" + result + "'");
 					done();
 				}
+
+				// Make sure we don't continue
+				return;
 			}
 
 			// Define extended properties on `matches`
@@ -149,8 +155,8 @@ module.exports = function (grunt) {
 			// Log
 			grunt.log.ok(matches);
 
-			// Done with result
-			done(matches);
+			// Done
+			done();
 		});
 	});
 };
