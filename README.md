@@ -84,6 +84,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+2.3.2 - Support CLI options  
 2.3.1 - Externalize common code to separat modules  
 2.3.0 - Added support for templated parameters  
 2.2.0 - Removed support for `callback` and `prop` (use `grunt.event.emit` instead)  
