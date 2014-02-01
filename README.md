@@ -87,6 +87,7 @@ grunt.event.once('git-describe', function (rev) {
   grunt.log.writeln("Git rev object: " + rev.object); // The 6 character commit SHA by itself
   grunt.log.writeln("Git rev dirty: " + rev.dirty);   // A flag denoting whether all local changes are committed
 });
+```
 
 ## Contributing
 
