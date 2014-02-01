@@ -78,6 +78,16 @@ grunt.registerTask('saveRevision', function() {
 });
 ```
 
+#### Returned Object
+The `rev` object returned makes several specific properties available, in addition to the full `toString` description.
+```js
+grunt.event.once('git-describe', function (rev) {
+  grunt.log.writeln("Git rev tag: " + rev.tag);
+  grunt.log.writeln("Git rev since: " + rev.since);
+  grunt.log.writeln("Git rev object: " + rev.object); // The 6 character commit SHA by itself
+  grunt.log.writeln("Git rev dirty: " + rev.dirty);   // A flag denoting whether all local changes are committed
+});
+
 ## Contributing
 
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
