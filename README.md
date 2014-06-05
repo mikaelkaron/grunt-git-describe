@@ -74,7 +74,7 @@ grunt.registerTask('saveRevision', function() {
         grunt.log.writeln("Git Revision: " + rev);
         grunt.option('gitRevision', rev);
     });    
-    grunt.task.run('git-describe');
+    grunt.event.emit('git-describe');
 });
 ```
 
