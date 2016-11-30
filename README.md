@@ -66,6 +66,12 @@ Default value: `true`
 
 A boolean that allows Grunt to keep going if there's an error in this task. This is useful if your build isn't guaranteed to always be run from within a Git repo.
 
+#### options.match
+Type: `String`
+Default value: `*`
+
+A string pattern used to find the required tag. See [git describe --match <pattern>](https://git-scm.com/docs/git-describe#git-describe---matchltpatterngt) documentation.
+
 ### Saving Output
 If you would like to save or otherwise use the retun value, use `grunt.event.emit`. Here is an example:
 ```js

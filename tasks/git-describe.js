@@ -20,12 +20,14 @@ module.exports = function (grunt) {
 	var COMMITISH = "commitish";
 	var TEMPLATE = "template";
 	var FAIL_ON_ERROR = "failOnError";
+	var MATCH = "match";
 
 	// Initial OPTIONS
 	var OPTIONS = {};
 	OPTIONS[CWD] = ".";
 	OPTIONS[TEMPLATE] = "{%=tag%}-{%=since%}-{%=object%}{%=dirty%}";
 	OPTIONS[FAIL_ON_ERROR] = true;
+	OPTIONS[MATCH] = "*";
 
 	// Add GIT_DESCRIBE delimiters
 	grunt.template.addDelimiters(GIT_DESCRIBE, "{%", "%}");
@@ -38,7 +40,7 @@ module.exports = function (grunt) {
 		var done = me.async();
 
 		// Get options and process
-		var options = _process.call(_options.call(me, _.defaults(_args.call(me, COMMITISH, CWD, TEMPLATE), me.options(OPTIONS)), COMMITISH, CWD, TEMPLATE, FAIL_ON_ERROR), {
+		var options = _process.call(_options.call(me, _.defaults(_args.call(me, COMMITISH, CWD, TEMPLATE), me.options(OPTIONS)), COMMITISH, CWD, TEMPLATE, FAIL_ON_ERROR, MATCH), {
 			"delimiters" : GIT_DESCRIBE
 		}, COMMITISH, CWD, FAIL_ON_ERROR);
 
@@ -48,7 +50,7 @@ module.exports = function (grunt) {
 		// Spawn git
 		_spawn({
 			"cmd" : "git",
-			"args" : [ "describe", "--tags", "--always", "--long", options[COMMITISH] || "--dirty" ],
+			"args" : [ "describe", "--tags", "--always", "--long", "--match="+options[MATCH], options[COMMITISH] || "--dirty" ],
 			"opts" : {
 				"cwd" : options[CWD]
 			}
