@@ -60,6 +60,12 @@ Default value: `{%=tag%}-{%=since%}-{%=object%}{%=dirty%}`
 
 A string value used to format the result of this task
 
+#### options.match
+Type: `String`
+Default value: `undefined`
+
+Value for the --match command line option. If set, only consider tags matching this glob pattern, excluding the "refs/tags/" prefix.
+
 #### options.failOnError
 Type: `boolean`  
 Default value: `true`
