@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.4.2"></a>
+## [2.4.2](https://github.com/mikaelkaron/grunt-git-describe/compare/v2.4.1...v2.4.2) (2016-12-05)
+
+
+### Bug Fixes
+
+* update regex to handle abbreviated hash > 7 chars ([#19](https://github.com/mikaelkaron/grunt-git-describe/issues/19)) ([2ad2c30](https://github.com/mikaelkaron/grunt-git-describe/commit/2ad2c30)), closes [#18](https://github.com/mikaelkaron/grunt-git-describe/issues/18)
+
+
+
 <a name="2.4.1"></a>
 ## [2.4.1](https://github.com/mikaelkaron/grunt-git-describe/compare/2.4.0...v2.4.1) (2016-12-05)
 
