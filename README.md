@@ -60,6 +60,12 @@ Default value: `{%=tag%}-{%=since%}-{%=object%}{%=dirty%}`
 
 A string value used to format the result of this task
 
+#### options.match
+Type: `String`
+Default value: `undefined`
+
+Value for the --match command line option. If set, only consider tags matching this glob pattern, excluding the "refs/tags/" prefix.
+
 #### options.failOnError
 Type: `boolean`  
 Default value: `true`
@@ -75,6 +81,17 @@ grunt.registerTask('saveRevision', function() {
         grunt.option('gitRevision', rev);
     });    
     grunt.task.run('git-describe');
+});
+```
+
+#### Returned Object
+The `rev` object returned makes several specific properties available, in addition to the full `toString` description.
+```js
+grunt.event.once('git-describe', function (rev) {
+  grunt.log.writeln("Git rev tag: " + rev.tag);
+  grunt.log.writeln("Git rev since: " + rev.since);
+  grunt.log.writeln("Git rev object: " + rev.object); // The 6 character commit SHA by itself
+  grunt.log.writeln("Git rev dirty: " + rev.dirty);   // A flag denoting whether all local changes are committed
 });
 ```
 

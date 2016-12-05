@@ -18,6 +18,7 @@ module.exports = function (grunt) {
 	var GIT_DESCRIBE = "git-describe";
 	var CWD = "cwd";
 	var COMMITISH = "commitish";
+	var MATCH = "match";
 	var TEMPLATE = "template";
 	var FAIL_ON_ERROR = "failOnError";
 
@@ -38,17 +39,24 @@ module.exports = function (grunt) {
 		var done = me.async();
 
 		// Get options and process
-		var options = _process.call(_options.call(me, _.defaults(_args.call(me, COMMITISH, CWD, TEMPLATE), me.options(OPTIONS)), COMMITISH, CWD, TEMPLATE, FAIL_ON_ERROR), {
+		var options = _process.call(_options.call(me, _.defaults(_args.call(me, COMMITISH, CWD, TEMPLATE, MATCH), me.options(OPTIONS)), COMMITISH, CWD, TEMPLATE, MATCH, FAIL_ON_ERROR), {
 			"delimiters" : GIT_DESCRIBE
-		}, COMMITISH, CWD, FAIL_ON_ERROR);
+		}, COMMITISH, CWD, MATCH, FAIL_ON_ERROR);
 
 		// Log flags (if verbose)
 		grunt.log.verbose.writeflags(options);
 
+		// Options
+		var cArgs = [ "describe", "--tags", "--always", "--long"];
+		if ( options[MATCH] ) {
+			cArgs = cArgs.concat(['--' + MATCH, options[MATCH]]);
+		}
+		cArgs.push(options[COMMITISH] || "--dirty");
+
 		// Spawn git
 		_spawn({
 			"cmd" : "git",
-			"args" : [ "describe", "--tags", "--always", "--long", options[COMMITISH] || "--dirty" ],
+			"args" : cArgs,
 			"opts" : {
 				"cwd" : options[CWD]
 			}
