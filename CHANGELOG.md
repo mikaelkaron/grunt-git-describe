@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.4.3"></a>
+## [2.4.3](https://github.com/mikaelkaron/grunt-git-describe/compare/v2.4.2...v2.4.3) (2018-01-10)
+
+
+
 <a name="2.4.2"></a>
 ## [2.4.2](https://github.com/mikaelkaron/grunt-git-describe/compare/v2.4.1...v2.4.2) (2016-12-05)
 
