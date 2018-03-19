@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.4.4"></a>
+## [2.4.4](https://github.com/mikaelkaron/grunt-git-describe/compare/v2.4.3...v2.4.4) (2018-03-19)
+
+
+### Bug Fixes
+
+* bump deps to finally get rid of grunt version warning ([aaae56a](https://github.com/mikaelkaron/grunt-git-describe/commit/aaae56a))
+
+
+
 <a name="2.4.3"></a>
 ## [2.4.3](https://github.com/mikaelkaron/grunt-git-describe/compare/v2.4.2...v2.4.3) (2018-01-10)
 
